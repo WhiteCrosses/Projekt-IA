@@ -43,3 +43,6 @@ SDL2 generated graphics that should represent terminal-based apps. SDL2 allows t
 ## Design patterns
 1. [Flyweight (Pyłek)](#https://refactoring.guru/pl/design-patterns/flyweight)
 2. ...
+
+## UML Class diagram
+![UML Class Diagram image](/assets/UML_Diagram_sketch.png)
