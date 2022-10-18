@@ -19,6 +19,21 @@ Tower defence based game with ASCII artstyle.
 >C++
 ## Cards
 Each card would have one positive and one negative effect (possibly random generation of cards?).
+Positive effects:
+1. Increase base armor
+2. Gain n% life steal
+3. Gain n armor penetration
+4. Turrets shoot double bullets
+5. Bullets shatter to smaller parts on hit
+6. Bullets set enemies in flames
+7. Bullets freeze enemies
+
+Negative effects:
+1. Enemies increased health
+2. Enemies increased armor
+3. Enemies increased speed
+4. Less base armor
+5. Turrets less accurate(???)
 
 Card choosing menu would appear often, making player change playstyle flexibly.
 Cards effects overlap creating unique cobos. This also affects enemy units, as negative effects can cause them to be really powerful.
