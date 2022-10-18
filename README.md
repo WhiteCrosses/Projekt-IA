@@ -19,6 +19,7 @@ Tower defence based game with ASCII artstyle.
 >C++
 ## Cards
 Each card would have one positive and one negative effect (possibly random generation of cards?).
+
 Positive effects:
 1. Increase base armor
 2. Gain n% life steal
