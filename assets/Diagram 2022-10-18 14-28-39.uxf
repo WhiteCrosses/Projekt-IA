@@ -1,0 +1,55 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><element><id>UMLClass</id><coordinates><x>387</x><y>63</y><w>189</w><h>153</h></coordinates><panel_attributes>&lt;&lt;Screen&gt;&gt;
+--
+-sizeX: int
+-sizeY: int
+-wallPositions[][]: int
+-gameRunning: bool
+--
+Init(): void
+EventHandler()
+LoadMap():void
+Clean()
+GameOver():void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>468</x><y>243</y><w>216</w><h>306</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>220;320;220;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>567</x><y>531</y><w>189</w><h>135</h></coordinates><panel_attributes>&lt;&lt;Enemy&gt;&gt;
+-
++type: string
++hp: int
++position[]: int
+--
++Spawn(): void
++Move(position, speed): void
++Attack(): void
++Death(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>387</x><y>423</y><w>189</w><h>90</h></coordinates><panel_attributes>&lt;&lt;Card&gt;&gt;
+--
++effect?:n/a
+--
++getEffect()
++setEffect()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>747</x><y>243</y><w>189</w><h>117</h></coordinates><panel_attributes>&lt;&lt;EnemyTypes&gt;&gt;
+--
++name: string
++maxHp: int
++damage: float
++armor: float
++lifeSteal: float
++speed: float
++sprite: image</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>387</x><y>279</y><w>189</w><h>108</h></coordinates><panel_attributes>&lt;&lt;CardTypes&gt;&gt;
+--
++damageModifier: int
++baseArmor: float
++baseLifeSteal: int
++enemyLifeSteal: int
++baseArmorPen: float
++enemyArmorPen: float</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>207</x><y>531</y><w>189</w><h>108</h></coordinates><panel_attributes>&lt;&lt;Base&gt;&gt;
+--
++hp
+-baseArmorPen: 
++armorPen: float
++lifeSteal: int
+--
++resetStats(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>297</x><y>207</y><w>198</w><h>342</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;360;10;50;200;50;200;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>54</x><y>252</y><w>189</w><h>108</h></coordinates><panel_attributes>&lt;&lt;Projectile&gt;&gt;
+--
++speed[]: float
++position[]: int 
++contact: checkContact()
+--
++checkContact(): bool
++Move(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>747</x><y>351</y><w>117</w><h>243</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>110;10;110;250;10;250</additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>378</y><w>27</w><h>63</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>504</x><y>504</y><w>81</w><h>81</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>70;70;10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>387</x><y>504</y><w>81</w><h>81</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;70;70;70;10</additional_attributes></element></diagram>
