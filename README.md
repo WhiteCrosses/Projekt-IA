@@ -13,6 +13,7 @@ Tower defence based game with ASCII artstyle.
 2. Randomness - best achieved by system of cards that player chooses. Their effect would stack creating (possibly) interesting combos.
 3. Very rapid flow of the game. A lot happening on the screen. Little time to act when e.g. choosing card or making other decisions.
 4. ASCII based artstyle - Make game feel, like it was made in the terminal (ncurses?).
+
 <del>5. Scalability - Possible more than one player. Either conected via LAN (?) or on local machine.
 ## Technology
 >SDL2
