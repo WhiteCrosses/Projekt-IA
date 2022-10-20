@@ -33,5 +33,7 @@ void Screen::gameOver()
 
 void Screen::fillPink()
 {
-    SDL_FillRect(renderer, NULL, 0xfcc1ff);
+    surf = SDL_SetVideoMode(640,480,0,SDL_SWSURFACE)
+    SDL_FillRect(surf, NULL, 0xfcc1ff);
+    SDL_Flip(surf);
 }
