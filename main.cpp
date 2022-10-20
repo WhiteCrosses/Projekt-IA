@@ -8,10 +8,8 @@ int main( int argc, char *argv[] ){
 
     Screen window(640,480);
     window.fillPink();
-    window.clean();
-
     SDL_Delay(5000);
-
+    window.clean();
     window.gameOver();
     SDL_Quit();
 
