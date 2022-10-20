@@ -3,8 +3,6 @@
 #include "Screen.h"
 
 int main( int argc, char *argv[] ){
-    
-    SDL_Window *window;
 
     SDL_Init(SDL_INIT_EVERYTHING);
 
