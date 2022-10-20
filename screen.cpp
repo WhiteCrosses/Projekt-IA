@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include "screen.h"
+#include <iostream>
 
 Screen::Screen(int width, int height)
     :window(NULL), renderer(NULL)
@@ -11,7 +12,7 @@ Screen::Screen(int width, int height)
                         SDL_WINDOWPOS_UNDEFINED,
                         width,
                         height,
-                        SDL_WINDOW_SHOW);
+                        SDL_WINDOW_SHOWN);
     if(window == NULL)
         std::cout<<"Failed to load! Error: "<<SDL_GetError()<<std::endl;
 
@@ -20,12 +21,12 @@ Screen::Screen(int width, int height)
                         SDL_RENDERER_ACCELERATED);
 }
 
-Screen::clean()
+void Screen::clean()
 {
     SDL_RenderClear(renderer);
 }
 
-Screen::gameOver()
+void Screen::gameOver()
 {
     SDL_DestroyWindow(window);
 }
