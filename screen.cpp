@@ -42,7 +42,7 @@ void Screen::fillPink()
     bg.w=50;
     bg.h=50;
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     SDL_RenderFillRect(renderer, &bg);
     SDL_RenderPresent(renderer);
 
