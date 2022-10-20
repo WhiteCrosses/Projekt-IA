@@ -30,3 +30,8 @@ void Screen::gameOver()
 {
     SDL_DestroyWindow(window);
 }
+
+void Screen::fillPink()
+{
+    SDL_SetRenderDrawColor(255,200,228,1);
+}

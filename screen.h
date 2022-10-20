@@ -10,6 +10,7 @@ public:
     Screen(int width, int height);
     void clean();
     void gameOver();
+    void fillPink();
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
