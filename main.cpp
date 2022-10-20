@@ -10,7 +10,7 @@ int main( int argc, char *argv[] ){
 
     SDL_Delay(5000);
 
-    Screen.gameOver();
+    window.gameOver();
     SDL_Quit();
 
     return 0;
