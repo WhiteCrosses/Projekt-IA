@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include "Screen.h"
 
 int main( int argc, char *argv[] ){
     
@@ -7,26 +8,11 @@ int main( int argc, char *argv[] ){
 
     SDL_Init(SDL_INIT_EVERYTHING);
 
-    window = SDL_CreateWindow(
-        "Okno SDL",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        640,
-        480,
-        SDL_WINDOW_SHOWN
-    );
-
-    if (window == NULL) {
-        printf("Nie utworzono okna: %s\n", SDL_GetError());
-        return 1;
-    }
+    Screen window(640,480);
 
     //setup renderer
-    SDL_Renderer* renderer = NULL;
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-
     SDL_RenderClear(renderer);
 
     SDL_Rect r;
