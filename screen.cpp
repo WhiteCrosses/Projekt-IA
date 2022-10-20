@@ -33,5 +33,5 @@ void Screen::gameOver()
 
 void Screen::fillPink()
 {
-    SDL_SetRenderDrawColor(renderer,255,200,228,1);
+    SDL_FillRect(renderer, NULL, 0xfcc1ff);
 }
