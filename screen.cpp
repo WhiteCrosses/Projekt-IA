@@ -33,6 +33,20 @@ void Screen::gameOver()
 
 void Screen::fillPink()
 {
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    SDL_Rect bg;
+    bg.x=50;
+    bg.y=50;
+    bg.w=50;
+    bg.h=50;
+    
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_RenderFillRect(renderer, &bg);
+    SDL_RenderPresent(renderer;)
+
+
     SDL_SetRenderDrawColor(renderer,0xFF, 0x00, 0x00, 0xFF);
     SDL_RenderClear(renderer);
 }
