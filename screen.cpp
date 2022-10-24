@@ -31,14 +31,14 @@ void Screen::gameOver()
     SDL_DestroyWindow(window);
 }
 
-void Screen::fillPink()
+void Screen::fillPink(int x, int y)
 {
     SDL_SetRenderDrawColor(renderer, 250, 160, 200, 1);
     SDL_RenderClear(renderer);
 
     SDL_Rect bg;
-    bg.x=50;
-    bg.y=50;
+    bg.x=x;
+    bg.y=y;
     bg.w=50;
     bg.h=50;
 
@@ -49,4 +49,12 @@ void Screen::fillPink()
 
     SDL_SetRenderDrawColor(renderer,0xFF, 0x00, 0x00, 0xFF);
     SDL_RenderClear(renderer);
+}
+
+void Timer::start(){
+    stime = (int)SDL_GetTicks();
+}
+
+int Timer::elapsedTime(){
+    return ((int)SDL_GetTicks()) - stime;
 }
