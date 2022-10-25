@@ -18,7 +18,7 @@ int main( int argc, char *argv[] ){
     double milliSecs = (1000.0 / TARGET_FPS) / 1000.0;
 
     while(!quit){
-        start = SDL_GetTicks()
+        start = SDL_GetTicks();
         
         window.fillPink(r,0);
         r++;
