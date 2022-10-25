@@ -16,15 +16,19 @@ int main( int argc, char *argv[] ){
     double end = 0;
     double dTime = 0.0;
     double milliSecs = (1000.0 / TARGET_FPS) / 1000.0;
+    uint32_t startTime = SDL_GetTicks();
+    uint32_t currTime = 1;
 
     while(!quit){
         start = SDL_GetTicks();
-        
         window.fillPink(r,0);
         r++;
+        currTime = SDL_GetTicks();
+        double elapsedTime = (currTime - startTime)/1000.0;
+        if(elapsedTime>=5){
+            quit=true;
+        }
     }
-
-    SDL_Delay(5000);
     window.gameOver();
     SDL_Quit();
 
