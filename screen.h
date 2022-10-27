@@ -7,18 +7,14 @@
 class Screen{
 public:
     Screen(int width, int height);
-    void clean();
+    SDL_Texture* loadTexture(const char* path);
+    void loadEntity();
     void gameOver();
-    void fillPink(int x, int y);
-private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-};
+    void update();
+    void keyState(int *quitPtr, int *xMove, int *yMove);
+    void clean();
+    void delay(int delay);
 
-class Timer{
-    private:
-        int stime;
-    public:
-        void start();
-        int elapsedTime();
+    SDL_Window* window;             //Unsafe, but needs to stay in public for easy access.
+    SDL_Renderer* renderer;         //Might fix later :)
 };

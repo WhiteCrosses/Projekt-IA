@@ -4,6 +4,7 @@
 #include "screen.h"
 #include <iostream>
 
+//Init of game
 Screen::Screen(int width, int height)
     :window(NULL), renderer(NULL)
 {
@@ -19,17 +20,71 @@ Screen::Screen(int width, int height)
     renderer = SDL_CreateRenderer(window,
                         -1,
                         SDL_RENDERER_ACCELERATED);
+
+    SDL_Surface* tmpSurface = IMG_Load("assets/frog.bmp");
+    //enemyTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
+    SDL_FreeSurface(tmpSurface);
 }
+
+
+SDL_Texture* Screen::loadTexture(const char* path)
+{
+    SDL_Texture* texture = NULL;
+    texture = IMG_LoadTexture(renderer, path);
+
+    if(texture == NULL) std::cout<<"Error loading texture: " << SDL_GetError() << std::endl;
+
+    return texture;
+}
+
+//Load texture to the renderer
+void Screen::loadEntity()
+{
+    SDL_RenderCopy(renderer, NULL, NULL, NULL);
+}
+
+//game over function - later add here closing page
+void Screen::gameOver()
+{
+    SDL_DestroyWindow(window);
+}
+
+
+void Screen::update()
+{
+    SDL_RenderPresent(renderer);
+}
+
+
+void Screen::keyState(int *quitPtr, int *xMove, int *yMove)
+{
+    SDL_Event e;
+    while(SDL_PollEvent(&e)) {
+        if(e.type == SDL_QUIT) *quitPtr = 1;
+    }
+
+    const Uint8 *keystates = SDL_GetKeyboardState(NULL);
+    if(keystates[SDL_SCANCODE_ESCAPE]) *quitPtr = 1;
+    if(keystates[SDL_SCANCODE_RIGHT]) *xMove = 1;
+    if(keystates[SDL_SCANCODE_LEFT]) *xMove = -1;
+    if(keystates[SDL_SCANCODE_UP]) *yMove = -1;
+    if(keystates[SDL_SCANCODE_DOWN]) *yMove = 1;
+
+}
+
 
 void Screen::clean()
 {
     SDL_RenderClear(renderer);
 }
 
-void Screen::gameOver()
+
+void Screen::delay(int delay)
 {
-    SDL_DestroyWindow(window);
+    SDL_Delay(delay);
 }
+
+/*  To be moved to another class - its test function
 
 void Screen::fillPink(int x, int y)
 {
@@ -50,11 +105,4 @@ void Screen::fillPink(int x, int y)
     SDL_SetRenderDrawColor(renderer,0xFF, 0x00, 0x00, 0xFF);
     SDL_RenderClear(renderer);
 }
-
-void Timer::start(){
-    stime = (int)SDL_GetTicks();
-}
-
-int Timer::elapsedTime(){
-    return ((int)SDL_GetTicks()) - stime;
-}
+*/
