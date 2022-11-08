@@ -56,7 +56,7 @@ void Screen::update()
 }
 
 
-void Screen::keyState(int *quitPtr, int *xMove, int *yMove)
+void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *turretAngle)
 {
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
@@ -65,11 +65,21 @@ void Screen::keyState(int *quitPtr, int *xMove, int *yMove)
 
     const Uint8 *keystates = SDL_GetKeyboardState(NULL);
     if(keystates[SDL_SCANCODE_ESCAPE]) *quitPtr = 1;
-    if(keystates[SDL_SCANCODE_RIGHT]) *xMove = 1;
-    if(keystates[SDL_SCANCODE_LEFT]) *xMove = -1;
+    if(keystates[SDL_SCANCODE_C]){
+        *hpPtr -= 1;
+        if(*hpPtr<=0) *quitPtr = 1;
+        }
+    
+    if(keystates[SDL_SCANCODE_RIGHT]) *turretAngle += 1;
+    if(keystates[SDL_SCANCODE_LEFT]) *turretAngle -=1;
     if(keystates[SDL_SCANCODE_UP]) *yMove = -1;
     if(keystates[SDL_SCANCODE_DOWN]) *yMove = 1;
 
+}
+
+
+void Screen::resetDamagable(){
+    damagable = true;
 }
 
 
@@ -79,10 +89,23 @@ void Screen::clean()
 }
 
 
+void Screen::timestep(uint32_t currTime, uint32_t startTime, uint32_t lastFrameTime, double dtime)
+{
+    currTime = SDL_GetTicks();
+    double elapsedTime = (currTime - startTime)/1000.0;
+    double frameTime = (currTime - lastFrameTime);        
+
+    if(frameTime<dtime) SDL_Delay(dtime - frameTime);
+        //if (elapsedTime>=10) quit = 1;
+}
+
+
 void Screen::delay(int delay)
 {
     SDL_Delay(delay);
 }
+
+
 
 /*  To be moved to another class - its test function
 
@@ -105,4 +128,29 @@ void Screen::fillPink(int x, int y)
     SDL_SetRenderDrawColor(renderer,0xFF, 0x00, 0x00, 0xFF);
     SDL_RenderClear(renderer);
 }
+
+░░░░░░░░░░░░░▄▄▀▀▀▀▀▀▄▄
+░░░░░░░░░░▄▄▀▄▄▄█████▄▄▀▄
+░░░░░░░░▄█▀▒▀▀▀█████████▄█▄
+░░░░░░▄██▒▒▒▒▒▒▒▒▀▒▀▒▀▄▒▀▒▀▄
+░░░░▄██▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▄
+░░░░██▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▌
+░░░▐██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐█
+░▄▄███▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
+▐▒▄▀██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐▌
+▌▒▒▌▒▀▒▒▒▒▒▒▄▀▀▄▄▒▒▒▒▒▒▒▒▒▒▒▒█▌
+▐▒▀▒▌▒▒▒▒▒▒▒▄▄▄▄▒▒▒▒▒▒▒▀▀▀▀▄▒▐
+░█▒▒▌▒▒▒▒▒▒▒▒▀▀▒▀▒▒▐▒▄▀██▀▒▒▒▌
+░░█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐▒▒▒▒▒▒▒▒█
+░░░▀▌▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▌▒▒▒▒▒▒▄▀
+░░░▐▒▒▒▒▒▒▒▒▒▄▀▐▒▒▒▒▒▐▒▒▒▒▄▀
+░░▄▌▒▒▒▒▒▒▒▄▀▒▒▒▀▄▄▒▒▒▌▒▒▒▐▀▀▀▄▄▄
+▄▀░▀▄▒▒▒▒▒▒▒▒▀▀▄▄▄▒▄▄▀▌▒▒▒▌░░░░░░
+▐▌░░░▀▄▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▄▀░░░░░░░
+░█░░░░░▀▄▄▒▒▒▒▒▒▒▒▒▒▒▒▄▀░█░░░░░░░
+░░█░░░░░░░▀▄▄▄▒▒▒▒▒▒▄▀░░░░█░░░░░░
+░░░█░░░░░░░░░▌▀▀▀▀▀▀▐░░░░░▐▌░░░░░ 
+
+
+
 */
