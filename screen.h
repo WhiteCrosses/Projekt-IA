@@ -7,18 +7,19 @@
 class Screen{
 public:
     Screen(int width, int height);
-    void clean();
+    
+    bool damagable = true;
+    
+    SDL_Texture* loadTexture(const char* path);
+    void loadEntity();
     void gameOver();
-    void fillPink(int x, int y);
-private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-};
+    void update();
+    void keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *turretAngle);
+    void clean();
+    void delay(int delay);
+    void timestep(uint32_t currTime, uint32_t startTime, uint32_t lastFrameTime, double dtime);
+    void resetDamagable();
 
-class Timer{
-    private:
-        int stime;
-    public:
-        void start();
-        int elapsedTime();
+    SDL_Window* window;             //Unsafe, but needs to stay in public for easy access.
+    SDL_Renderer* renderer;         //Might fix later :)
 };
