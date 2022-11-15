@@ -2,7 +2,9 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include "screen.h"
+#include "entity.h"
 #include <iostream>
+
 
 //Init of game
 Screen::Screen(int width, int height)
@@ -56,7 +58,7 @@ void Screen::update()
 }
 
 
-void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *turretAngle)
+void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *turretAngle, bool *newProjectile)
 {
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
@@ -74,6 +76,7 @@ void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *tur
     if(keystates[SDL_SCANCODE_LEFT]) *turretAngle -=1;
     if(keystates[SDL_SCANCODE_UP]) *yMove = -1;
     if(keystates[SDL_SCANCODE_DOWN]) *yMove = 1;
+    if(keystates[SDL_SCANCODE_P]) *newProjectile = true;
 
 }
 
@@ -96,6 +99,7 @@ void Screen::timestep(uint32_t currTime, uint32_t startTime, uint32_t lastFrameT
     double frameTime = (currTime - lastFrameTime);        
 
     if(frameTime<dtime) SDL_Delay(dtime - frameTime);
+    
         //if (elapsedTime>=10) quit = 1;
 }
 
@@ -104,7 +108,6 @@ void Screen::delay(int delay)
 {
     SDL_Delay(delay);
 }
-
 
 
 /*  To be moved to another class - its test function
