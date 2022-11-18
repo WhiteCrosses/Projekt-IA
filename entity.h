@@ -14,6 +14,9 @@ public:
     int angSpeed;   //deg per sec
     double deltaTime;
     int angle;
+    int constAngle;
+    int startX;
+    int startY;
 
     void setX(int x);
     void setY(int y);

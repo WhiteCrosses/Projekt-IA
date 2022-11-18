@@ -14,6 +14,9 @@ Entity::Entity(double dtime, int enemyType, int posX, int posY, int angle)
     deltaTime = dtime/1000;
     rect.x = posX;
     rect.y = posY;
+    startX = posX;
+    startY = posY;
+
     switch(enemyType){
         
         //basic enemy
@@ -79,9 +82,9 @@ void Entity::incrementY(int y)
 
 void Entity::move()
 {
-    double radAngle = angle*PI/180;
+    double radAngle = (constAngle+90)*PI/180;
     incrementX(-cos(radAngle)*linSpeed*deltaTime);
-    incrementY(sin(radAngle)*linSpeed*deltaTime);
+    incrementY(-sin(radAngle)*linSpeed*deltaTime);
     std::cout<<deltaTime<<std::endl;
 }
 

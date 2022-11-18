@@ -95,18 +95,26 @@ int main( int argc, char *argv[] ){
         window.clean();
         window.keyState(quitPtr, hpPtr, &xMove, &yMove, &turretAngle, &newProjectile);
 
-        if(newProjectile) projectileExists = true;
+        if(projectile.rect.x > 640 || projectile.rect.x < 0 || projectile.rect.y < 0 || projectile.rect.y > 480){
+            projectileExists = false;
+            projectile.rect.x = projectile.startX;
+            projectile.rect.y = projectile.startY;
+        }
+
+
+        if(newProjectile){
+            projectileExists = true;
+            projectile.constAngle = turretAngle;
+            newProjectile = false;
+        }
 
         if(projectileExists){
             projectile.render(*window.renderer, healthTexture, 0);
             projectile.move();
         }
 
-        
-
         if(direction == 1) xMove = 5;
         if(direction == 0) xMove = -5;
-
 
         enemy.rect.x += xMove;
         enemy.rect.y += yMove;
@@ -116,18 +124,14 @@ int main( int argc, char *argv[] ){
         if(enemy.rect.x >= (WINDOW_WIDTH - FROG_DISTANCE)) direction = 0;
         if(enemy.rect.x <= FROG_DISTANCE) direction = 1;
         
-        
         SDL_RenderCopy(window.renderer, bgTexture, NULL, &bgRect);
         enemy.render(*window.renderer, entityTexture, entityAngle);
         turret.render(*window.renderer, turretTexture, turretAngle);
         
-        //SDL_RenderCopyEx(window.renderer, entityTexture, NULL, &enemy.rect, entityAngle, NULL, SDL_FLIP_HORIZONTAL);
-        //SDL_RenderCopyEx(window.renderer, turretTexture, NULL, &turret.rect, turretAngle, NULL, SDL_FLIP_HORIZONTAL);
         for(int i=0; i<hpLeft; i++){
             SDL_RenderCopy(window.renderer, healthTexture, NULL, &heart.rect);
             heart.rect.x += HEART_DISTANCE;
         }
-
 
         window.update();
         xMove = 0;
