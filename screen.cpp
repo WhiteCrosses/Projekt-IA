@@ -76,7 +76,7 @@ void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *tur
     if(keystates[SDL_SCANCODE_LEFT]) *turretAngle -=1;
     if(keystates[SDL_SCANCODE_UP]) *yMove = -1;
     if(keystates[SDL_SCANCODE_DOWN]) *yMove = 1;
-    if(keystates[SDL_SCANCODE_P]) *newProjectile = true;
+    if(keystates[SDL_SCANCODE_SPACE]) *newProjectile = true;
 
 }
 
