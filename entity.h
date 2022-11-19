@@ -22,7 +22,7 @@ public:
     void setY(int y);
     void incrementX(int x);
     void incrementY(int y);
-    void move();
+    void move(bool *projectileExists);
     void render(SDL_Renderer& renderer,SDL_Texture* entityTexture,int entityAngle);
 
     int getX();

@@ -41,6 +41,7 @@ Entity::Entity(double dtime, int enemyType, int posX, int posY, int angle)
             rect.h = 20;
             linSpeed = 200;
             break;
+
         default:
             rect.x = 20;
             rect.y = 20;
@@ -80,12 +81,16 @@ void Entity::incrementY(int y)
     rect.y += y;
 }
 
-void Entity::move()
+void Entity::move(bool *projectileExists)
 {
+    if(rect.x > 640 || rect.x < 0 || rect.y < 0 || rect.y > 480){
+            rect.x = startX;
+            rect.y = startY;
+            *projectileExists = false;
+        }
     double radAngle = (constAngle+90)*PI/180;
     incrementX(-cos(radAngle)*linSpeed*deltaTime);
     incrementY(-sin(radAngle)*linSpeed*deltaTime);
-    std::cout<<deltaTime<<std::endl;
 }
 
 void Entity::render(SDL_Renderer& renderer,SDL_Texture* entityTexture,int entityAngle)

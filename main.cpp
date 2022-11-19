@@ -95,11 +95,7 @@ int main( int argc, char *argv[] ){
         window.clean();
         window.keyState(quitPtr, hpPtr, &xMove, &yMove, &turretAngle, &newProjectile);
 
-        if(projectile.rect.x > 640 || projectile.rect.x < 0 || projectile.rect.y < 0 || projectile.rect.y > 480){
-            projectileExists = false;
-            projectile.rect.x = projectile.startX;
-            projectile.rect.y = projectile.startY;
-        }
+        
 
 
         if(newProjectile){
@@ -110,7 +106,7 @@ int main( int argc, char *argv[] ){
 
         if(projectileExists){
             projectile.render(*window.renderer, healthTexture, 0);
-            projectile.move();
+            projectile.move(&projectileExists);
         }
 
         if(direction == 1) xMove = 5;
