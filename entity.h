@@ -7,23 +7,30 @@
 class Entity
 {
 public:
-    Entity(double dtime, int enemyType, int posX, int posY, int angle);
+    Entity(int enemyType, int posX, int posY, int angle);
+    Entity();
     SDL_Rect rect;
 
+    double dtime;
     int linSpeed;   //px per sec
     int angSpeed;   //deg per sec
     double deltaTime;
-    int angle;
+    float angle;
     int constAngle;
     int startX;
     int startY;
+    bool inUse;
 
+
+    void setVariables(int posX, int posY, int angle);
     void setX(int x);
     void setY(int y);
     void incrementX(int x);
     void incrementY(int y);
-    void move(bool *projectileExists);
-    void render(SDL_Renderer& renderer,SDL_Texture* entityTexture,int entityAngle);
+    void move();
+    void explosion(int posX, int posY);
+    void render(SDL_Renderer& renderer,SDL_Texture* entityTexture);
+    bool collisionCheck(SDL_Rect targetRect);
 
     int getX();
     int getY();
