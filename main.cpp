@@ -5,9 +5,12 @@
 #include "Entity.h"
 #include "health.h"
 #include "enemy.h"
+#include "projectile.h"
 #include "timer.h"
 #include "constants.hpp"
 #include <random>
+#include <vector>
+#include <algorithm>
 
 
 #define FROG_DISTANCE 80
@@ -19,24 +22,26 @@
 #define TURRET_POSY WindowConstants::Height-140
 
 
+using namespace std;
 
+
+int getRandom(){
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 gen(rd()); // seed the generator
+    std::uniform_int_distribution<> distr(0, 12); // define the range
+
+    return 55*distr(gen);
+}
 
 int main( int argc, char *argv[] ){
 
     int i;
-
 
     SDL_Init(SDL_INIT_EVERYTHING);
 
     Screen window(WindowConstants::Width,WindowConstants::Height);
     Health heart(WindowConstants::Height, HEART_DISTANCE_BOTTOM);
     Entity turret(2, TURRET_POSX, TURRET_POSY, 0);
-
-    Entity** enemy = new Entity*[EntityLimits::MaxEnemies];
-    for(i=0;i<EntityLimits::MaxProjectiles;i++) enemy[i] = new Entity (1, 50, 50, 0);
-
-    Entity** projectile = new Entity*[EntityLimits::MaxProjectiles];
-    for(i=0;i<EntityLimits::MaxProjectiles;i++) projectile[i] = new Entity(3, TURRET_POSX, TURRET_POSY, 0);
 
     Entity** particle = new Entity*[PARTICLE_COUNT];
     for(i=0;i<PARTICLE_COUNT;i++) particle[i] = new Entity(4, 0, 0, 0);
@@ -64,12 +69,7 @@ int main( int argc, char *argv[] ){
     bool projectileExists = false;
 
     int quit = 0;
-    int *quitPtr;
-    quitPtr = &quit;
-
     int hpLeft = 5;
-    int *hpPtr;
-    hpPtr = &hpLeft;
 
     double start = 0;
     double end = 0;
@@ -98,35 +98,55 @@ int main( int argc, char *argv[] ){
     bool entityCooldownSatisfied = false;
 
 
+    vector<Enemy> enemies;
+    vector<Projectile> projectiles;
+
     while(quit != 1){
         lastFrameTime = SDL_GetTicks();
         
         //Heavy-on-time stuff here
         SDL_SetRenderDrawColor(window.renderer, 158,132,146,1);
         window.clean();
-        window.keyState(quitPtr, hpPtr, &xMove, &yMove, &turretAngle, &newProjectile, &turret, TimeConstants::DTIME);
-
+        float modTurretAngle;
+        window.keyState(&quit, &hpLeft, &xMove, &yMove, &turret.angle, &newProjectile, &turret, TimeConstants::DTIME, &modTurretAngle);
+        turret.angle = modTurretAngle;
 
         if(enemySpawnTickCounter == EntityLimits::EnemySpawnCooldown){
             
-            std::random_device rd; // obtain a random number from hardware
-            std::mt19937 gen(rd()); // seed the generator
-            std::uniform_int_distribution<> distr(0, 12); // define the range
-
-
-
+            
+            
             enemySpawnCooldown = 120;
             enemySpawnTickCounter = 0;
-            int m = 0;
-            while(enemy[m]->inUse == true && m <= EntityLimits::MaxEnemies){
-                m++;
-            }
-            
 
             int enemyDistance = dist;
-            enemy[m]->rect.x = 100+(55*distr(gen));
-            enemy[m]->inUse = true;
-            std::cout<<"enemy spawned!\n"<<enemy[m]->rect.x<<"\n";
+            
+            //================================================
+            //          New way of creating objects
+            //                using vectors
+            //================================================
+
+            Enemy enemy_tmp;
+            int displacement = 100+getRandom();
+            int passable = false;
+            int iteration = 0;
+            while(!passable){
+                passable = true;
+                for (auto &enems : enemies){
+                    if(enems.rect.x == displacement){
+                        displacement = 100+getRandom();
+                        passable = false;
+                    }
+                }
+                if(iteration >= 10){
+                    passable = true;
+                }
+                iteration++;
+            }
+
+            enemy_tmp.rect.x = displacement;
+            
+            enemies.push_back(enemy_tmp);
+            std::cout<<"enemy spawned!\n"<<enemies.back().rect.x<<"\n";
             
             dist++;
             if(dist>4) dist = 0;
@@ -144,26 +164,49 @@ int main( int argc, char *argv[] ){
             newProjectile=false;
         }
         if(newProjectile && cooldownSatisfied){
-            int m;
-            for(m=0;m<EntityLimits::MaxEnemies;m++){
-                if(projectile[m]->inUse == false){
-                    projectile[m]->inUse = true;
-                    cooldownSatisfied = false;
-                    projectile[m]->constAngle = turret.angle;
-                    projectile[m]->angle = turret.angle;
-                    break;
-                }
-            }
+
+            Projectile projectile_tmp;
+            projectile_tmp.constAngle = turret.angle;
+            projectile_tmp.angle = turret.angle;
+            
+            projectiles.push_back(projectile_tmp);
+
+            cooldownSatisfied = false;
             newProjectile = false;
+            std::cout<<"Projectile produced!\n";
         }
 
         entityAngle += 3;
+
+
+        int projs_idx=0;
+
+        SDL_RenderCopy(window.renderer, bgTexture, NULL, &bgRect);
+        turret.render(*window.renderer, turretTexture);
+
+        for (auto &projs : projectiles){
+
+            projs.move();
+
+            int enems_idx = 0;
+            //for (auto &enems : enemies){
+                
+                /*if(projs.collisionCheck(enems.rect))
+                    std::cout<<"Collided!\n";
+
+                    enemies.erase(enemies.begin()+enems_idx)+1;
+                    projectiles.erase(projectiles.begin()+projs_idx+1);
+
+                    enems_idx++;
+                    break;
+            }*/
+            projs_idx++;
+        }
 
         //*********************************
         //      Rendering all stuff
         //*********************************
 
-        //Particles
         for(i=0;i<PARTICLE_COUNT;i++){
             if(particle[i]->inUse){
                 particle[i]->move();
@@ -171,7 +214,7 @@ int main( int argc, char *argv[] ){
             }
         }
 
-        //Projectiles
+        /*
         for(int n = 0; n < EntityLimits::MaxProjectiles; n++){
             for(int m = 0; m < EntityLimits::MaxEnemies; m++){
                 if(projectile[n]->inUse && enemy[m]->inUse){
@@ -185,7 +228,7 @@ int main( int argc, char *argv[] ){
             
 
                     
-
+                        
                         int i;
                         for(i=0;i<PARTICLE_COUNT;i++){
                             particle[i]->rect.x = projectile[n]->rect.x;
@@ -200,35 +243,38 @@ int main( int argc, char *argv[] ){
                     }
                 }
             }
+        }*/
+
+        //================================================
+        //          New way of rendering using vectors
+        //================================================
+
+        
+
+        for (auto &enems : enemies){
+            enems.render(*window.renderer, entityTexture);
         }
 
-        //Enemies
-        for(int m=0; m<=EntityLimits::MaxEnemies; m++){
-            if(enemy[m]->inUse == true){
-                enemy[m]->render(*window.renderer, entityTexture);
-            }
-        }
-        
-        //Health hearts
         for(int i=0; i<hpLeft; i++){
             SDL_RenderCopy(window.renderer, healthTexture, NULL, &heart.rect);
             heart.rect.x += HEART_DISTANCE;
         }
 
-        SDL_RenderCopy(window.renderer, bgTexture, NULL, &bgRect);
-        turret.render(*window.renderer, turretTexture);
-        
-
-
+        for (auto &projs : projectiles){
+            projs.render(*window.renderer, healthTexture);
+        }
 
 
         window.update();
         xMove = 0;
         yMove = 0;
         heart.reset();
-        //Calculate elapsed time
+        std::cout<<turret.angle<<"\n";
         window.timestep(currTime, startTime, lastFrameTime, TimeConstants::DTIME);
     }
+
+    std::cout<<"quitting!\n";
+
     window.gameOver();
     SDL_Quit();
 

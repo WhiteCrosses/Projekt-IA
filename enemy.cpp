@@ -14,6 +14,6 @@ Enemy::Enemy()
     rect.w = 20;
     rect.h = 20;
     linSpeed = 100;
-    inUse = false;
+    inUse = true;
 
 }

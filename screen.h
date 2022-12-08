@@ -15,7 +15,7 @@ public:
     void loadEntity();
     void gameOver();
     void update();
-    void keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *turretAngle, bool *newProjectile, Entity *turret, float dtime);
+    void keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, float *turretAngle, bool *newProjectile, Entity *turret, float dtime, float *modTurretAngle);
     void clean();
     void delay(int delay);
     void timestep(uint32_t currTime, uint32_t startTime, uint32_t lastFrameTime, double dtime);

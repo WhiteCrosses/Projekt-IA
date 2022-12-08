@@ -58,7 +58,7 @@ void Screen::update()
 }
 
 
-void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *turretAngle, bool *newProjectile, Entity *turret, float dtime)
+void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, float *turretAngle, bool *newProjectile, Entity *turret, float dtime, float *modTurretAngle)
 {
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
@@ -72,8 +72,11 @@ void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, int *tur
         if(*hpPtr<=0) *quitPtr = 1;
         }
     
-    if(keystates[SDL_SCANCODE_RIGHT]) turret->angle += (dtime/100*turret->angSpeed);
-    if(keystates[SDL_SCANCODE_LEFT]) turret->angle -= (dtime/100*turret->angSpeed);
+    if(keystates[SDL_SCANCODE_RIGHT]){
+        *modTurretAngle += (dtime/100*turret->angSpeed);
+        std::cout<<"Changed turret angle\n";
+    }
+    if(keystates[SDL_SCANCODE_LEFT]) *modTurretAngle -= (dtime/100*turret->angSpeed);
     if(keystates[SDL_SCANCODE_UP]) *yMove = -1;
     if(keystates[SDL_SCANCODE_DOWN]) *yMove = 1;
     if(keystates[SDL_SCANCODE_P]) *newProjectile = true;

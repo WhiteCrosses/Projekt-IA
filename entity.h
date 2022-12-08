@@ -7,7 +7,7 @@
 class Entity
 {
 public:
-    Entity(int enemyType, int posX, int posY, int angle);
+    Entity(int enemyType, int posX, int posY, float dangle);
     Entity();
     SDL_Rect rect;
 
@@ -16,13 +16,14 @@ public:
     int angSpeed;   //deg per sec
     double deltaTime;
     float angle;
-    int constAngle;
+    float constAngle;
     int startX;
     int startY;
     bool inUse;
 
 
     void setVariables(int posX, int posY, int angle);
+    void setVariables(int posX, int posY, int angle, int linSpeedE);
     void setX(int x);
     void setY(int y);
     void incrementX(int x);

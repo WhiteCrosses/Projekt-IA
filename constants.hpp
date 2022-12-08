@@ -13,8 +13,8 @@ namespace TimeConstants
 
 namespace WindowConstants
 {
-    const int Width = 480;
-    const int Height = 640;
+    const int Width = 640;
+    const int Height = 480;
 }
 
 namespace EntityLimits
@@ -25,9 +25,8 @@ namespace EntityLimits
     const int EnemySpawnCooldown = 60;
 }
 
-namespace EntityConstants
+namespace TurretConstants
 {
-
 
 }
 #endif

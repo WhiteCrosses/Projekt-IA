@@ -5,7 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "entity.h"
 
-class Enemy : private Entity
+class Enemy : public Entity
 {
 public:
     Enemy();

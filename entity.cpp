@@ -11,10 +11,11 @@
 
 //Init of game
 Entity::Entity(){
+
 }
 
 
-Entity::Entity(int enemyType, int posX, int posY, int angle)
+Entity::Entity(int enemyType, int posX, int posY, float dangle)
 {
     dtime = TimeConstants::DTIME;
     deltaTime = dtime/1000;
@@ -22,6 +23,7 @@ Entity::Entity(int enemyType, int posX, int posY, int angle)
     rect.y = posY;
     startX = posX;
     startY = posY;
+    angle = dangle;
     constAngle = angle;
     inUse = false;
 
@@ -56,6 +58,7 @@ Entity::Entity(int enemyType, int posX, int posY, int angle)
             rect.h = 10;
             linSpeed = 100;
             inUse = false;
+            break;
 
         default:
             rect.x = 20;
@@ -73,6 +76,18 @@ void Entity::setVariables(int posX, int posY, int angle)
     rect.y = posY;
     startX = posX;
     startY = posY;
+    constAngle = angle;
+    inUse = false;
+}
+
+void Entity::setVariables(int posX, int posY, int angle, int linSpeedE)
+{
+    deltaTime = dtime/1000;
+    rect.x = posX;
+    rect.y = posY;
+    startX = posX;
+    startY = posY;
+    linSpeed = linSpeedE;
     constAngle = angle;
     inUse = false;
 }
