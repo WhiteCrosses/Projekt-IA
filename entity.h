@@ -3,6 +3,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <iostream>
+
 
 class Entity
 {
@@ -11,10 +13,10 @@ public:
     Entity();
     SDL_Rect rect;
 
-    double dtime;
+    int dtime;
     int linSpeed;   //px per sec
     int angSpeed;   //deg per sec
-    double deltaTime;
+    float deltaTime;
     float angle;
     float constAngle;
     int startX;
@@ -28,7 +30,7 @@ public:
     void setY(int y);
     void incrementX(int x);
     void incrementY(int y);
-    void move();
+    bool move();
     void explosion(int posX, int posY);
     void render(SDL_Renderer& renderer,SDL_Texture* entityTexture);
     bool collisionCheck(SDL_Rect targetRect);

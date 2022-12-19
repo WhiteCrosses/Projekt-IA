@@ -8,7 +8,6 @@
 
 #define PI 3.14
 
-
 //Init of game
 Entity::Entity(){
 
@@ -17,15 +16,15 @@ Entity::Entity(){
 
 Entity::Entity(int enemyType, int posX, int posY, float dangle)
 {
-    dtime = TimeConstants::DTIME;
-    deltaTime = dtime/1000;
+    dtime = 1000/TimeConstants::FPS;
+    deltaTime = 1000/TimeConstants::FPS;
     rect.x = posX;
     rect.y = posY;
     startX = posX;
     startY = posY;
     angle = dangle;
     constAngle = angle;
-    inUse = false;
+    inUse = true;
 
     switch(enemyType){
         
@@ -34,7 +33,7 @@ Entity::Entity(int enemyType, int posX, int posY, float dangle)
             rect.w = 20;
             rect.h = 20;
             linSpeed = 100;
-            inUse = false;
+            inUse = true;
             break;
 
         //turret
@@ -77,7 +76,7 @@ void Entity::setVariables(int posX, int posY, int angle)
     startX = posX;
     startY = posY;
     constAngle = angle;
-    inUse = false;
+    inUse = true;
 }
 
 void Entity::setVariables(int posX, int posY, int angle, int linSpeedE)
@@ -89,7 +88,7 @@ void Entity::setVariables(int posX, int posY, int angle, int linSpeedE)
     startY = posY;
     linSpeed = linSpeedE;
     constAngle = angle;
-    inUse = false;
+    inUse = true;
 }
 
 
@@ -123,16 +122,20 @@ void Entity::incrementY(int y)
     rect.y += y;
 }
 
-void Entity::move()
+bool Entity::move()
 {
     if(rect.x > 640 || rect.x < 0 || rect.y < 0 || rect.y > 480){
-            rect.x = startX;
-            rect.y = startY;
-            inUse = false;
+            std::cout<<"ERROR!\n";
+            return false;
+
+            
         }
     double radAngle = (constAngle+90)*PI/180;
-    incrementX(-cos(radAngle)*linSpeed*deltaTime);
-    incrementY(-sin(radAngle)*linSpeed*deltaTime);
+    incrementX(-cos(radAngle)*linSpeed*dtime/100);
+    incrementY(-sin(radAngle)*linSpeed*dtime/100);
+
+    std::cout<<(-sin(radAngle)*linSpeed*dtime/100)<<"\n";
+    return true;
 }
 
 void Entity::render(SDL_Renderer& renderer,SDL_Texture* entityTexture)
@@ -143,7 +146,7 @@ void Entity::render(SDL_Renderer& renderer,SDL_Texture* entityTexture)
 
 bool Entity::collisionCheck(SDL_Rect targetRect){
     // a1 = rect
-    //b1 = targetRect
+    // b1 = targetRect
 
     std::cout<<"entered collisionCheck\n";
     std::cout<<(rect.x > (targetRect.x + targetRect.w))<<", ";
@@ -151,15 +154,15 @@ bool Entity::collisionCheck(SDL_Rect targetRect){
     std::cout<<((rect.y + rect.h) > targetRect.y)<<", ";
     std::cout<<(rect.x > (targetRect.y + targetRect.h))<<"\n";
 
-    if(rect.x == (rect.x + rect.w) && rect.y == (rect.y + rect.h)){
+    if(targetRect.x == (rect.x + rect.w) && targetRect.y == (rect.y + rect.h)){
         return false;
     }
 
-    if(rect.x > (targetRect.x + targetRect.w) && targetRect.x < (rect.x + rect.w)){
+    if(rect.x > (targetRect.x + targetRect.w) || targetRect.x > (rect.x + rect.w)){
         return false;
     }
 
-    if((rect.y + rect.h) > targetRect.y && (targetRect.y + targetRect.h) < rect.y){
+    if((rect.y + rect.h) > targetRect.y || rect.y < (targetRect.y + targetRect.h)){
         return false;
     }
 

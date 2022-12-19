@@ -7,8 +7,8 @@
 
 namespace TimeConstants
 {
-  const int FPS = 60;
-  const int DTIME = 1000/FPS;
+  const float FPS = 60;
+  const float DTIME = 1000/FPS;
 }
 
 namespace WindowConstants

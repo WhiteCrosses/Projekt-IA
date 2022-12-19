@@ -5,10 +5,11 @@
 #include "counter.h"
 #include <cmath>
 
-counter::incrementEnemy(){
-    
-}
-
-counter::reset(){
+Counter::Counter()
+{
+    tickCounter = 0;
+    iteration = 0;
+    passable = false;
+    cooldownSatisfied = false;
     
 }

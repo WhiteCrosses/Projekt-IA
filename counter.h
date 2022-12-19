@@ -7,7 +7,8 @@
 
 class Counter{
     public:
-        int enemyTickCounter;
-        void incrementEnemy();
-        void reset();
-}
+        int tickCounter;
+        int iteration;
+        bool passable;
+        bool cooldownSatisfied;
+};

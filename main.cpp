@@ -98,6 +98,8 @@ int main( int argc, char *argv[] ){
     bool entityCooldownSatisfied = false;
 
 
+    vector<Health> hearts;
+    vector<Entity> particles;
     vector<Enemy> enemies;
     vector<Projectile> projectiles;
 
@@ -111,43 +113,37 @@ int main( int argc, char *argv[] ){
         window.keyState(&quit, &hpLeft, &xMove, &yMove, &turret.angle, &newProjectile, &turret, TimeConstants::DTIME, &modTurretAngle);
         turret.angle = modTurretAngle;
 
+        //================================================
+        //          New way of creating objects
+        //                using vectors
+        //================================================
+
         if(enemySpawnTickCounter == EntityLimits::EnemySpawnCooldown){
-            
-            
-            
+            int enemyDistance = dist;
+            int displacement = 100+getRandom();
+            bool passable = false;
+            int iteration = 0;
+
             enemySpawnCooldown = 120;
             enemySpawnTickCounter = 0;
 
-            int enemyDistance = dist;
-            
-            //================================================
-            //          New way of creating objects
-            //                using vectors
-            //================================================
-
             Enemy enemy_tmp;
-            int displacement = 100+getRandom();
-            int passable = false;
-            int iteration = 0;
+
             while(!passable){
                 passable = true;
                 for (auto &enems : enemies){
                     if(enems.rect.x == displacement){
                         displacement = 100+getRandom();
                         passable = false;
-                    }
-                }
-                if(iteration >= 10){
-                    passable = true;
-                }
+                    }}
+                if(iteration >= 10) passable = true;
                 iteration++;
             }
 
-            enemy_tmp.rect.x = displacement;
-            
+            enemy_tmp.rect.x = displacement;            
             enemies.push_back(enemy_tmp);
-            std::cout<<"enemy spawned!\n"<<enemies.back().rect.x<<"\n";
-            
+
+            //Distance checking fragment - To be deleted :)
             dist++;
             if(dist>4) dist = 0;
         }
@@ -170,9 +166,10 @@ int main( int argc, char *argv[] ){
             projectile_tmp.angle = turret.angle;
             
             projectiles.push_back(projectile_tmp);
-
+            
             cooldownSatisfied = false;
             newProjectile = false;
+            projectiles.back().constAngle = turret.angle;
             std::cout<<"Projectile produced!\n";
         }
 
@@ -185,21 +182,25 @@ int main( int argc, char *argv[] ){
         turret.render(*window.renderer, turretTexture);
 
         for (auto &projs : projectiles){
-
-            projs.move();
-
+            if(!projs.move()){
+                projectiles.erase(projectiles.begin()+projs_idx);
+                std::cout<<"Reached border!\n";
+                break;
+            }
             int enems_idx = 0;
-            //for (auto &enems : enemies){
-                
-                /*if(projs.collisionCheck(enems.rect))
+            for (auto &enems : enemies){
+
+                if(SDL_HasIntersection(&projs.rect, &enems.rect)){
                     std::cout<<"Collided!\n";
 
-                    enemies.erase(enemies.begin()+enems_idx)+1;
-                    projectiles.erase(projectiles.begin()+projs_idx+1);
+                    enemies.erase(enemies.begin()+enems_idx);
+                    projectiles.erase(projectiles.begin()+projs_idx);
+                        
+                    projectiles.shrink_to_fit();
+                    enemies.shrink_to_fit();
 
                     enems_idx++;
-                    break;
-            }*/
+                }}
             projs_idx++;
         }
 
@@ -269,7 +270,6 @@ int main( int argc, char *argv[] ){
         xMove = 0;
         yMove = 0;
         heart.reset();
-        std::cout<<turret.angle<<"\n";
         window.timestep(currTime, startTime, lastFrameTime, TimeConstants::DTIME);
     }
 

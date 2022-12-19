@@ -8,7 +8,7 @@
 
 
 //Init of game
-Enemy::Enemy()
+Enemy::Enemy() : Entity(1, 20, 20, 0)
 {
     setVariables(20, 20, 0);
     rect.w = 20;
