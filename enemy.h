@@ -9,5 +9,6 @@ class Enemy : public Entity
 {
 public:
     Enemy();
+    int health;
 
 };

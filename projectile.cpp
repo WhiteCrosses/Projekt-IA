@@ -12,5 +12,6 @@ Projectile::Projectile() : Entity()
     setVariables(WindowConstants::Width/2, (WindowConstants::Height/2)+140, 0, 50);
     rect.w = 20;
     rect.h = 20;
+    linAcceleration = 0;
     
 }

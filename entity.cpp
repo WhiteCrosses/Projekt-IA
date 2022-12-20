@@ -32,7 +32,7 @@ Entity::Entity(int enemyType, int posX, int posY, float dangle)
         case 1:
             rect.w = 20;
             rect.h = 20;
-            linSpeed = 100;
+            linSpeed = 0;
             inUse = true;
             break;
 
@@ -131,6 +131,10 @@ bool Entity::move()
             
         }
     double radAngle = (constAngle+90)*PI/180;
+
+    linSpeed += linAcceleration;
+    std::cout<<linSpeed<<"\n";
+
     incrementX(-cos(radAngle)*linSpeed*dtime/100);
     incrementY(-sin(radAngle)*linSpeed*dtime/100);
 

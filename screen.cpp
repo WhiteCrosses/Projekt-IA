@@ -3,6 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "screen.h"
 #include "entity.h"
+#include "constants.hpp"
 #include <iostream>
 
 
@@ -72,11 +73,8 @@ void Screen::keyState(int *quitPtr, int *hpPtr, int *xMove, int *yMove, float *t
         if(*hpPtr<=0) *quitPtr = 1;
         }
     
-    if(keystates[SDL_SCANCODE_RIGHT]){
-        *modTurretAngle += (dtime/100*turret->angSpeed);
-        std::cout<<"Changed turret angle\n";
-    }
-    if(keystates[SDL_SCANCODE_LEFT]) *modTurretAngle -= (dtime/100*turret->angSpeed);
+    if(keystates[SDL_SCANCODE_RIGHT]) *modTurretAngle += (dtime/100*TurretConstants::TurretAngularSpeed);
+    if(keystates[SDL_SCANCODE_LEFT]) *modTurretAngle -= (dtime/100*TurretConstants::TurretAngularSpeed);
     if(keystates[SDL_SCANCODE_UP]) *yMove = -1;
     if(keystates[SDL_SCANCODE_DOWN]) *yMove = 1;
     if(keystates[SDL_SCANCODE_P]) *newProjectile = true;

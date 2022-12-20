@@ -14,7 +14,8 @@ public:
     SDL_Rect rect;
 
     int dtime;
-    int linSpeed;   //px per sec
+    float linAcceleration; //acceleration per game tick
+    float linSpeed;   //px per sec
     int angSpeed;   //deg per sec
     float deltaTime;
     float angle;

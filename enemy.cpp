@@ -13,7 +13,9 @@ Enemy::Enemy() : Entity(1, 20, 20, 0)
     setVariables(20, 20, 0);
     rect.w = 20;
     rect.h = 20;
-    linSpeed = 100;
+    linSpeed = 0;
+    linAcceleration = 0.5;
+    health = 100;
     inUse = true;
 
 }

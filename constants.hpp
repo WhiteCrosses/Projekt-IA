@@ -27,6 +27,7 @@ namespace EntityLimits
 
 namespace TurretConstants
 {
-
+    const int FireRateCooldown = 20;
+    const int TurretAngularSpeed = 50;
 }
 #endif

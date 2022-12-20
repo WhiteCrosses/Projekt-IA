@@ -8,6 +8,7 @@
 #include "projectile.h"
 #include "timer.h"
 #include "constants.hpp"
+#include <algorithm>
 #include <random>
 #include <vector>
 #include <algorithm>
@@ -23,6 +24,31 @@
 
 
 using namespace std;
+
+
+
+//Black magic :)
+template <typename T>
+class pointer_is_equal_to_object
+{
+public:
+    explicit pointer_is_equal_to_object(T const &);
+
+    bool operator()(T const *) const;
+
+private:
+    T const & value;
+};
+
+template <typename T>
+pointer_is_equal_to_object<T>::pointer_is_equal_to_object(T const & v) : value(v) {}
+
+template <typename T>
+bool pointer_is_equal_to_object<T>::operator()(T const * p) const
+{
+    return p && (*p == value);
+}
+
 
 
 int getRandom(){
@@ -140,7 +166,15 @@ int main( int argc, char *argv[] ){
                 iteration++;
             }
 
-            enemy_tmp.rect.x = displacement;            
+            enemy_tmp.rect.x = displacement;
+
+            float angle = atan2(turret.rect.y - enemy_tmp.rect.y, turret.rect.x - enemy_tmp.rect.x);
+            angle *= 180 / 3.14;
+            //angle *= -1;
+            angle += 90;
+            enemy_tmp.constAngle = angle;
+
+
             enemies.push_back(enemy_tmp);
 
             //Distance checking fragment - To be deleted :)
@@ -151,7 +185,7 @@ int main( int argc, char *argv[] ){
         enemySpawnTickCounter++;
         tickCounter++;
         
-        if(tickCounter == 60){
+        if(tickCounter == TurretConstants::FireRateCooldown){
             cooldownSatisfied = true;
             tickCounter = 0;
         }
@@ -181,6 +215,10 @@ int main( int argc, char *argv[] ){
         SDL_RenderCopy(window.renderer, bgTexture, NULL, &bgRect);
         turret.render(*window.renderer, turretTexture);
 
+        for (auto &enems : enemies){
+            enems.move();
+        }
+
         for (auto &projs : projectiles){
             if(!projs.move()){
                 projectiles.erase(projectiles.begin()+projs_idx);
@@ -193,14 +231,29 @@ int main( int argc, char *argv[] ){
                 if(SDL_HasIntersection(&projs.rect, &enems.rect)){
                     std::cout<<"Collided!\n";
 
-                    enemies.erase(enemies.begin()+enems_idx);
+
+                    // Using so-called "erase-remove idiom"
+                    // For further understanding: https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
+
+                    //enemies.erase(std::remove(enemies.begin(), enemies.end(), enems), enemies.end());
+
+                    //remove(enemies, enems);
+
+                    
+                    enems.linSpeed = -50;
+                    enems.health -= 50;
+                    if(enems.health <= 0) enemies.erase(enemies.begin()+enems_idx);
+
+
                     projectiles.erase(projectiles.begin()+projs_idx);
                         
                     projectiles.shrink_to_fit();
                     enemies.shrink_to_fit();
 
-                    enems_idx++;
-                }}
+                    
+                }
+                enems_idx++;
+            }   
             projs_idx++;
         }
 
